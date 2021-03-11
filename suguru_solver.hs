@@ -1,0 +1,2 @@
+//Suguru solver in haskell
+
