@@ -16,6 +16,15 @@ region 6 = [
     [7,7,6,6,5,5],
     [7,7,6,6,5,5]]
 
+region 7 = [
+    [0, 1, 2, 2, 2, 2, 3],
+    [0, 1, 1, 2, 6, 3, 3],
+    [4, 1, 5, 6, 6, 6, 3],
+    [4, 4, 5, 5, 6, 9, 3],
+    [4, 4, 5, 8, 9, 9, 9],
+    [7, 7, 8, 8, 8, 9,10],
+    [7, 7, 7, 8,10,10,10]]
+
 input::Int -> [[Int]]
 input 5 = [
     [0,0,0,0,0],
@@ -31,6 +40,15 @@ input 6 = [
     [5,1,0,3,0,0],
     [0,0,0,0,0,2],
     [4,0,2,0,0,0]]
+
+input 7 = [
+    [0,0,0,0,0,0,1],
+    [0,0,0,0,0,3,0],
+    [0,0,0,0,0,0,0],
+    [3,0,0,0,0,2,0],
+    [0,0,0,0,0,3,0],
+    [5,0,0,5,0,0,0],
+    [0,0,0,0,0,0,1]]
 
 -- region::Int -> [[Int]]
 -- region 5 = [
@@ -184,13 +202,16 @@ suguruIsComplete [] = True
 suguruIsComplete (a:b) | (suguruIsCompleteLine a) = suguruIsComplete b
                         | otherwise = False
 
+solverCompare::[[Int]] -> [[Int]] -> [[Int]] -> [[Int]] -> [Int] -> Int -> Int -> Int-> [[Int]]
+solverCompare matrix inputMatrix newInputMatrix regionMatrix regionVector x y currentValue | (compareMatriz newInputMatrix matrix) = solverSuguru inputMatrix regionMatrix regionVector x y (currentValue+1) 
+                    | otherwise = matrix
+
+
 solverSuguruItemCompareX::[[Int]] -> [[Int]] -> [[Int]] -> [Int] -> Int -> Int -> Int-> [[Int]]
-solverSuguruItemCompareX inputMatrix newInputMatrix regionMatrix regionVector x y currentValue | (compareMatriz newInputMatrix (solverSuguru newInputMatrix regionMatrix regionVector 0 (y+1) 1)) = solverSuguru inputMatrix regionMatrix regionVector x y (currentValue+1) 
-                                                                                            | otherwise = (solverSuguru newInputMatrix regionMatrix regionVector 0 (y+1) 1)
+solverSuguruItemCompareX inputMatrix newInputMatrix regionMatrix regionVector x y currentValue = solverCompare (solverSuguru newInputMatrix regionMatrix regionVector 0 (y+1) 1) inputMatrix newInputMatrix regionMatrix regionVector x y currentValue
 
 solverSuguruItemCompareY::[[Int]] -> [[Int]] -> [[Int]] -> [Int] -> Int -> Int -> Int-> [[Int]]
-solverSuguruItemCompareY inputMatrix newInputMatrix regionMatrix regionVector x y currentValue | (compareMatriz newInputMatrix (solverSuguru newInputMatrix regionMatrix regionVector (x+1) y 1)) = solverSuguru inputMatrix regionMatrix regionVector x y (currentValue+1) 
-                                                                                            | otherwise = (solverSuguru newInputMatrix regionMatrix regionVector (x+1) y 1)
+solverSuguruItemCompareY inputMatrix newInputMatrix regionMatrix regionVector x y currentValue = solverCompare (solverSuguru newInputMatrix regionMatrix regionVector (x+1) y 1) inputMatrix newInputMatrix regionMatrix regionVector x y currentValue
 
 solverSuguruItem::[[Int]] -> [[Int]] -> [[Int]] -> [Int] -> Int -> Int -> Int-> [[Int]]
 solverSuguruItem inputMatrix newInputMatrix regionMatrix regionVector x y currentValue | ((x+1) == matrixSize inputMatrix) && ((y+1) == matrixSize inputMatrix) = newInputMatrix
@@ -225,4 +246,4 @@ main = do
     let inp = input 5
     let vecReg = getVectorRegions reg
 
-    print (solver (input 6))
+    print (solver (input 7))
