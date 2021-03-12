@@ -3,6 +3,22 @@ type Matriz = [[Int]]
 type Coordenada = (Int,Int)
 
 
+region:: Int -> [[Int]]
+region 5 = [
+    [0,0,1,1,1],
+	[0,0,0,2,1],
+	[3,3,2,2,2],
+	[4,3,3,2,5],
+	[4,4,3,5,5]]
+
+input::Int -> [[Int]]
+input 5 = [
+    [5,1,1,1,1],
+	[0,0,0,0,0],
+	[0,2,3,2,0],
+	[0,0,0,0,0],
+	[0,1,0,0,1]]
+
 tabuleiro5x5 = [[(0,0),(0,1),(1,0),(1,1),(1,2)],
 			[(0,2),(0,3),(0,4),(1,4)],
 			[(1,3),(2,2),(2,3),(2,4),(3,3)],
@@ -34,39 +50,37 @@ tabuleiro7x7  = [[(0,0),(1,0)],
 
 --Procura na matriz uma coordenada valida para inserir 
 
-elemento :: Matriz -> Coordenada -> Int
-elemento M (x,y) = M !! x !! y
+elemento :: [[Int]] -> Coordenada -> Int
+elemento mat (x,y) = mat !! x !! y
 
--- Nothing teria que criar um none com monad
-find_valid :: Matriz -> Coordenada -> Maybe Coordenada
-find_valid M (x,y) | elemento M (x,y) == 0 = Just (x,y)
-					   | x == length M && y == length M = Nothing 
-					   | y == length M && elemento M (x,y) == 0 = Just (x,y)
-					   | y == length M = find_valid(0,y+1)
-					   | otherwise = find_valid(x+1,y)
+
+
+
+find_valid :: [[Int]] -> Coordenada -> Coordenada
+find_valid mat (x,y) | elemento mat(x,y) == 0 = (x,y)
+			       | x == length mat && y == length mat = (-1,-1)
+			       | y == length mat && x /= length mat = find_valid mat (x+1,0)
+			       | otherwise = find_valid mat (x,y+1)
 
 
 
 --Verifica se é valido o chute
 
-is_valid :: Matriz -> Int -> Coordenada -> Bool
-is_valid M kick (x,y) | length M == 5 = metodo5x5
-						where metodo5x5 = 
+--is_valid :: Matriz -> Int -> Coordenada -> Bool
+--is_valid M kick (x,y) | length M == 5 = metodo5x5
+--						where metodo5x5 = 
 					
 
 -- Resolve o Suguro, retornando o problema resolvido
 
-solver_suguru :: Matriz -> Matriz
-solver_suguru (a:b) = 
+--solver_suguru :: Matriz -> Matriz
+--solver_suguru (a:b) 
 
 
 
 main = do
-    matrix = [[5, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0],
-		  	[0, 2, 3, 2, 0],
-		  	[0, 0, 0, 0, 0],
-		  	[0, 1, 0, 0, 1]]
+
+    --matrix = [[5, 0, 0, 0, 0],[0, 0, 0, 0, 0],[0, 2, 3, 2, 0],[0, 0, 0, 0, 0],[0, 1, 0, 0, 1]]
     
-    print(matrix)
+	print(find_valid (input 5) (0,0))
     
