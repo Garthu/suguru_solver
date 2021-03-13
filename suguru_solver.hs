@@ -24,13 +24,13 @@ regiao 6 = [
     [7,7,6,6,5,5]]
 
 regiao 7 = [
-    [0,1,2,2,2,2,3],
-    [0,1,1,2,6,3,3],
-    [4,1,5,6,6,6,3],
-    [4,4,5,5,6,9,3],
-    [4,4,5,8,9,9,9],
-    [7,7,8,8,8,9,10],
-    [7,7,7,8,10,10,10]]
+    [0,0,1,1,2,2,2],
+    [0,0,3,3,3,2,2],
+    [0,4,4,3,5,6,6],
+    [7,4,4,5,5,5,6],
+    [7,7,4,8,5,9,6],
+    [7,7,8,8,8,9,6],
+    [10,10,10,8,9,9,9]]
 
 -- Armazena os valores inciais da matriz, servido
 -- de entrada. Este seria o puzzle base que deverá
@@ -52,13 +52,13 @@ entrada 6 = [
     [4,0,2,0,0,0]]
 
 entrada 7 = [
-    [0,0,0,0,0,0,1],
-    [0,0,0,0,0,3,0],
-    [0,0,0,0,0,0,0],
-    [3,0,0,0,0,2,0],
-    [0,0,0,0,0,3,0],
-    [5,0,0,5,0,0,0],
-    [0,0,0,0,0,0,1]]
+    [1,0,0,0,0,1,0],
+    [0,0,3,0,0,0,0],
+    [0,0,0,0,5,0,0],
+    [3,0,2,0,2,0,2],
+    [2,0,0,0,0,0,0],
+    [0,0,5,0,0,5,0],
+    [1,0,0,0,1,0,0]]
 
 ---------------------------------Setar valor na Matriz----------------------------------
 
@@ -111,7 +111,7 @@ retornaMaiorValorNaLinha (a:b) max | (a > max) = retornaMaiorValorNaLinha b a
 -- Retorna o maior valor encontrado nas linhas da matriz
 retornaMaiorValorNaMatriz::[[Int]] -> Int -> Int
 retornaMaiorValorNaMatriz [] max = max
-retornaMaiorValorNaMatriz (a:b) max | (retornaMaiorValor a 0 > max) = retornaMaiorValorNaMatriz b (retornaMaiorValorNaLinha a 0)
+retornaMaiorValorNaMatriz (a:b) max | (retornaMaiorValorNaLinha a 0 > max) = retornaMaiorValorNaMatriz b (retornaMaiorValorNaLinha a 0)
                         | otherwise = retornaMaiorValorNaMatriz b max
 
 -- Retorna o maior valor encontrado na matrix + 1, pois
@@ -121,7 +121,7 @@ retornaQntdRegioes [] = 0
 retornaQntdRegioes matrix = 1 + (retornaMaiorValorNaMatriz matrix 0)
 -----------------------------------------------------------------------------------------
 
-----------------------<nome>----------------------------------
+--------------------------------------------------------
 
 -- Verifica quantas vezes o value aparece na linha
 -- e retorna o total de vezes
@@ -173,7 +173,7 @@ comparaElementos matrix value x y | (x < 0) = False
                                  | (y < 0) = False
                                  | (x == retornaTamanhoMatriz matrix) = False
                                  | (y == retornaTamanhoMatriz matrix) = False
-                                 | (value == (getElementMatrix matrix x y)) = True
+                                 | (value == (retornaElementoMatriz matrix x y)) = True
                                  | otherwise = False
 
 -- Verifica os 8 vizinhos do elementos, comparando os atraves da funçao compareElementos
