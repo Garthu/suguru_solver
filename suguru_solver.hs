@@ -233,29 +233,37 @@ comparaMatriz _ [] = False
 comparaMatriz (a:b) (c:d) | (comparaLinha a c) = comparaMatriz b d
                           | otherwise = False
 
-
+-- Compara duas matrizes, se forem iguais um novo número é testado,
+-- caso contrário a matriz com valor alterado é retornada
 solverCompare::[[Int]] -> [[Int]] -> [[Int]] -> [[Int]] -> [Int] -> Int -> Int -> Int-> [[Int]]
 solverCompare matrix inputMatrix newInputMatrix regionMatrix regionVector x y currentValue | (comparaMatriz newInputMatrix matrix) = solverSuguru inputMatrix regionMatrix regionVector x y (currentValue+1) 
                     | otherwise = matrix
 
-
+-- Verifica a próxima linha chamando a função auxiliar solverCompare
+-- mantendo o X fixo
 solverSuguruItemCompareX::[[Int]] -> [[Int]] -> [[Int]] -> [Int] -> Int -> Int -> Int-> [[Int]]
 solverSuguruItemCompareX inputMatrix newInputMatrix regionMatrix regionVector x y currentValue = solverCompare (solverSuguru newInputMatrix regionMatrix regionVector 0 (y+1) 1) inputMatrix newInputMatrix regionMatrix regionVector x y currentValue
 
+-- Verifica a próxima linha chamando a função auxiliar solverCompare
+-- mantendo o Y fixo
 solverSuguruItemCompareY::[[Int]] -> [[Int]] -> [[Int]] -> [Int] -> Int -> Int -> Int-> [[Int]]
 solverSuguruItemCompareY inputMatrix newInputMatrix regionMatrix regionVector x y currentValue = solverCompare (solverSuguru newInputMatrix regionMatrix regionVector (x+1) y 1) inputMatrix newInputMatrix regionMatrix regionVector x y currentValue
 
+-- Verifica se chegou no final da matriz e retorna a matriz em questão,
+-- caso contrário continua as verificações indo em outras direções
 solverSuguruItem::[[Int]] -> [[Int]] -> [[Int]] -> [Int] -> Int -> Int -> Int-> [[Int]]
 solverSuguruItem inputMatrix newInputMatrix regionMatrix regionVector x y currentValue | ((x+1) == retornaTamanhoMatriz inputMatrix) && ((y+1) == retornaTamanhoMatriz inputMatrix) = newInputMatrix
                                                                                     | ((x+1) == retornaTamanhoMatriz inputMatrix) = solverSuguruItemCompareX inputMatrix newInputMatrix regionMatrix regionVector x y currentValue
                                                                                     | otherwise = solverSuguruItemCompareY inputMatrix newInputMatrix regionMatrix regionVector x y currentValue
 
+-- Passa para a próxima coordenada da matriz
 solverSuguruItemOtherwise::[[Int]] -> [[Int]] -> [Int] -> Int -> Int -> Int-> [[Int]]
 solverSuguruItemOtherwise inputMatrix regionMatrix regionVector x y currentValue | ((x+1) == retornaTamanhoMatriz inputMatrix) && ((y+1) == retornaTamanhoMatriz inputMatrix) = inputMatrix
                                                                                     | ((x+1) == retornaTamanhoMatriz inputMatrix) = solverSuguru inputMatrix regionMatrix regionVector 0 (y+1) 1
                                                                                     | otherwise = solverSuguru inputMatrix regionMatrix regionVector (x+1) y 1
 
-
+-- Função principal responsável pelo backtracking, encaminhando
+-- as verificações e setando valores
 solverSuguru::[[Int]] -> [[Int]] -> [Int] -> Int -> Int -> Int-> [[Int]]
 solverSuguru inputMatrix regionMatrix regionVector x y currentValue | (currentValue > ((retornaPesoDaRegiao regionMatrix regionVector x y))) = inputMatrix
                                                                     | (validaPonto inputMatrix regionMatrix x y currentValue) = do
