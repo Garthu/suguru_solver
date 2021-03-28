@@ -293,11 +293,11 @@
     )
 )
 
-(defun solverSuguruItemCompareX(input_matriz new_input_matriz region_matriz region_vector x y)
+(defun solverSuguruItemCompareX(input_matriz new_input_matriz region_matriz region_vector x y current_value)
     (solverCompare (solverSuguru new_input_matriz region_matriz region_vector 0 (+ 1 y) 1) input_matriz new_input_matriz region_matriz region_vector x y current_value)
 )
 
-(defun solverSuguruItemCompareY(input_matriz new_input_matriz region_matriz region_vector x y)
+(defun solverSuguruItemCompareY(input_matriz new_input_matriz region_matriz region_vector x y current_value)
     (solverCompare (solverSuguru new_input_matriz region_matriz region_vector (+ 1 x) y 1) input_matriz new_input_matriz region_matriz region_vector x y current_value)
 )
 
@@ -305,8 +305,8 @@
     (if (and (= (+ 1 x) (retornaTamanhoMatriz input_matriz)) (= (+ 1 y) (retornaTamanhoMatriz input_matriz)))
         new_input_matriz
         (if (= (+ 1 x) (retornaTamanhoMatriz input_matriz))
-            (solverSuguruItemCompareX input_matriz new_input_matriz region_vector x y current_value)
-            (solverSuguruItemCompareY input_matriz new_input_matriz region_vector x y current_value)
+            (solverSuguruItemCompareX input_matriz new_input_matriz region_matriz region_vector x y current_value)
+            (solverSuguruItemCompareY input_matriz new_input_matriz region_matriz region_vector x y current_value)
         )
     )
 )
@@ -327,7 +327,7 @@
         (if (validaPonto input_matriz region_matriz x y current_value)
             (solverSuguruItem input_matriz (buscaCoordenada input_matriz current_value x y 0) region_matriz region_vector x y current_value)
             (if (= 0 (retornaElementoMatriz input_matriz x y 0))
-                (solverSuguru region_matriz region_vector x y (+ 1 current_value))
+                (solverSuguru input_matriz region_matriz region_vector x y (+ 1 current_value))
                 (solverSuguruItemOtherwise input_matriz region_matriz region_vector x y current_value)
             )
         )
@@ -349,7 +349,7 @@
     ;(write-line (write-to-string (retornaVetorDePesos (matriz-regiao matriz8))))
     ;(write-line (write-to-string (retornaTamanhoMatriz (matriz-regiao matriz8))))
     ;(write-line (write-to-string (temVizinhos (matriz-entrada matriz8) 2 2 2)))
-    (write-line (write-to-string (solver (matriz-entrada matriz8) (matriz-regiao matriz8))))
+    (write-line (write-to-string (solver (matriz-entrada matriz5) (matriz-regiao matriz8))))
 )
 
 (main)
