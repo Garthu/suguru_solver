@@ -1,7 +1,21 @@
+; Trabalho 2 - Suguru Solver
+; Alunos: José Luiz de Souza - 19100533
+;         Samuel Cardoso - 19100544
+;         Thiago Zimmermann Loureiro Chaves - 19100547
+
+; Define as subregões de cada regiao, onde para cada índices (x,y)
+; existe um value definindo qual a subregião que aquela coordenada
+; pertence, esta função será um função auxiliar para definir as
+; subregiões de cada região definida na função 'entrada'
+
 (defstruct matriz
     regiao
     entrada
 )
+
+; Armazena os valores inciais da matriz, servido
+; de entrada. Este seria o puzzle base que deverá
+; ser resolvido
 
 (setq matriz5
     (make-matriz
@@ -75,6 +89,11 @@
     )
 )
 
+;;;;;;;;;;;;;;;;-Setar valor na Matriz;;;;;;;;;;;;;;;;;
+
+; Percorre um linha da Matriz que aqui está como um vetor
+; até encontrar o índice certo, quando o encontra, seta
+; o valor para 'value'
 (defun setaValorNaLinhaDaMatriz(lista value y at)
     (if (null lista)
         (list '())
@@ -85,6 +104,10 @@
     )
 )
 
+
+; Percorre a matriz até a linha onde o valor deve ser de-
+; finido, e ali chama a função setaValorNaLinhaDaMatriz,
+; para que a mesma defina o valor na matriz
 (defun buscaCoordenada(matriz_value value x y at)
     (if (null matriz_value)
         (list '())
@@ -95,6 +118,12 @@
     )
 )
 
+;;;;;;;;;;;;;;;;Funções auxiliares;;;;;;;;;;;;;;;;;;;-
+
+; Como no nome do bloco diz, essa função vai ser respon-
+; sável por retornar elementos de uma matriz, podendo
+; ela ser a entrada ou a regiao, então servindo para
+; inúmeros propósitos
 (defun retornaElementoDaLinha(lista y at)
     (if (null lista)
         -1
@@ -115,6 +144,13 @@
     )
 )
 
+; Nesta função é importante definir quais serão as entradas,
+; pois elas mudam total o sentido do que é feito, nela, a 
+; matriz que será passada será a matriz de regiões, portanto
+; nela está guardado em cada coordenada, qual a região que
+; a coordenada pertence, já no vetor teremos os pesos de
+; cada região armazenados em índices respectivos, portanto
+; a operação realizada é vetor[matriz[x][y]]
 (defun retornaPesoDaRegiao(matriz_value vetor_de_pesos x y)
     (if (null matriz_value)
         -1
@@ -125,6 +161,9 @@
     )
 )
 
+;;;;;;;;;;;Funções de retorno de Qntd Região;;;;;;;;;;;;;;;;;
+
+; Retorna o maior número encontrado na linha
 (defun retornaMaiorValorNaLinha(lista maximo)
     (if (null lista)
         maximo
@@ -135,6 +174,7 @@
     )
 )
 
+; Retorna o maior valor encontrado nas linhas da matriz
 (defun retornaMaiorValorNaMatriz(matriz_value maximo)
     (if (null matriz_value)
         maximo
@@ -145,6 +185,8 @@
     )
 )
 
+; Retorna o maior valor encontrado na matrix + 1, pois
+; na matriz os valores começam em 0
 (defun retornaQntdRegioes(matriz_value)
     (if (null matriz_value)
         0
@@ -152,6 +194,8 @@
     )
 )
 
+; Verifica quantas vezes o value aparece na linha
+; e retorna o total de vezes
 (defun retornaVezesNaLinha(lista value)
     (if (null lista)
         0
@@ -162,6 +206,8 @@
     )
 )
 
+; Verifica quantas vezes o value aparece na matriz
+; usando com função auxiliar a função retornaVezesNaLinha
 (defun retornaVezesNaMatriz(matriz_value value)
     (if (null matriz_value)
         0
@@ -169,6 +215,7 @@
     )
 )
 
+; Função auxiliar da responsável por criar o vetor em si
 (defun defineVetorDePesos(matriz_value region_value qnt_regions)
     (if (= qnt_regions region_value)
         NIL
@@ -176,6 +223,9 @@
     )
 )
 
+; Define o vetor onde os índices representam o peso da
+; região, então se vetor[0] = 5, significa que o tamanho
+; da região 1 é 5.
 (defun retornaVetorDePesos(matriz_value)
     (if (null matriz_value)
         NIL
@@ -183,20 +233,27 @@
     )
 )
 
+;;;;;;;;;Funções para determinar o tamanho;;;;;;;;;;;;;;;;;;
+
+; Percorre a linha a fim de determinar o tamanho da linha que se encontra
 (defun retornaTamanhoLinha(lista)
     (if (null lista)
         0
         (+ 1 (retornaTamanhoLinha (cdr lista)))
     )
 )
-
+; Utiliza da função anterior , para determinar o tamanho da matriz
 (defun retornaTamanhoMatriz(matriz_value)
     (if (null matriz_value)
         0
         (retornaTamanhoLinha (car matriz_value))
     )
 )
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;; Funções para comparação ;;;;;;;;;;;;;;;;;;;;;
+
+; Verifica se o elemento e válido e caso verdadeiro compara dois elementos, retornando um Booleano
 (defun comparaElementos(matriz_value value x y)
     (if (< x 0)
         NIL
@@ -216,6 +273,7 @@
     )
 )
 
+; Verifica os 8 vizinhos do elementos, comparando os atraves da funçao compareElementos
 (defun temVizinhos(matriz_value value x y)
     (or (comparaElementos matriz_value value x (- y 1))
     (or (comparaElementos matriz_value value x (+ y 1))
@@ -228,8 +286,7 @@
     ))))))))
 )
 
-;Testado até aqui
-
+; Verifica se tem o mesmo elemento na linha na região
 (defun temMesmoValorNaRegiaoLinha(lista1 lista2 region_value data_value)
     (if (and (null lista1) (null lista2))
         NIL
@@ -240,6 +297,7 @@
     )
 )
 
+;verifica se tem o mesmo elemento na matriz da região
 (defun temMesmoValorNaRegiaoMatriz(matriz1 matriz2 region_value data_value)
     (if (and (null matriz1) (null matriz2))
         NIL
@@ -250,6 +308,13 @@
     )
 )
 
+; Verifica um elemento (x,y) da matriz de entrada, se ele for 0
+; então significa que ali pode-se testar um novo valor, então
+; verifica-se se o valor 'currentValue' é encontrado nos vizinhos
+; e se aquele valor é encontrado na região da coordenada atual
+; se for encontrado significa que aquele valor é inválido para a
+; posição naquele instante (já que em uma outra tentativa ele po-
+; de ser válido sim)
 (defun validaPonto(input_matriz region_matriz x y current_value)
     (if (= (retornaElementoMatriz input_matriz x y 0) 0)
         (if (or (temVizinhos input_matriz current_value x y) (temMesmoValorNaRegiaoMatriz input_matriz region_matriz (retornaElementoMatriz region_matriz x y 0) current_value))
@@ -260,6 +325,7 @@
     )
 )
 
+; Verifica se as linhas são iguais
 (defun comparaLinha(lista1 lista2)
     (if (and (null lista1) (null lista2))
         T
@@ -270,6 +336,7 @@
     )
 )
 
+;Compara se as Matrizes são iguais atraves da chamada da função comparaLinha
 (defun comparaMatriz(matriz1 matriz2)
     (if (and (null matriz1) (null matriz2))
         T
@@ -286,6 +353,8 @@
     )
 )
 
+; Compara duas matrizes, se forem iguais um novo número é testado,
+; caso contrário a matriz com valor alterado é retornada
 (defun solverCompare(matriz_value input_matriz new_input_matriz region_matriz region_vector x y  current_value)
     (if (comparaMatriz new_input_matriz matriz_value)
         (solverSuguru input_matriz region_matriz region_vector x y (+ current_value 1))
@@ -293,14 +362,20 @@
     )
 )
 
+; Verifica a próxima linha chamando a função auxiliar solverCompare
+; mantendo o X fixo
 (defun solverSuguruItemCompareX(input_matriz new_input_matriz region_matriz region_vector x y current_value)
     (solverCompare (solverSuguru new_input_matriz region_matriz region_vector 0 (+ 1 y) 1) input_matriz new_input_matriz region_matriz region_vector x y current_value)
 )
 
+; Verifica a próxima linha chamando a função auxiliar solverCompare
+; mantendo o Y fixo
 (defun solverSuguruItemCompareY(input_matriz new_input_matriz region_matriz region_vector x y current_value)
     (solverCompare (solverSuguru new_input_matriz region_matriz region_vector (+ 1 x) y 1) input_matriz new_input_matriz region_matriz region_vector x y current_value)
 )
 
+; Verifica se chegou no final da matriz e retorna a matriz em questão,
+; caso contrário continua as verificações indo em outras direções
 (defun solverSuguruItem(input_matriz new_input_matriz region_matriz region_vector x y current_value)
     (if (and (= (+ 1 x) (retornaTamanhoMatriz input_matriz)) (= (+ 1 y) (retornaTamanhoMatriz input_matriz)))
         new_input_matriz
@@ -311,6 +386,7 @@
     )
 )
 
+; Passa para a próxima coordenada da matriz
 (defun solverSuguruItemOtherwise(input_matriz region_matriz region_vector x y current_value)
     (if (and (= (+ 1 x) (retornaTamanhoMatriz input_matriz)) (= (+ 1 y) (retornaTamanhoMatriz input_matriz)))
         input_matriz
@@ -321,6 +397,8 @@
     )
 )
 
+; Função principal responsável pelo backtracking, encaminhando
+; as verificações e setando valores
 (defun solverSuguru(input_matriz region_matriz region_vector x y current_value)
     (if (> current_value (retornaPesoDaRegiao region_matriz region_vector x y))
         input_matriz
@@ -334,6 +412,9 @@
     )
 )
 
+; Inicia a solução por backtracking, disponibilizando para a função
+; solverSuguru a matriz de entrada, a matriz de regiões, o vetor de
+; pesos, o valor de (x,y) inicial e um primeiro chute de valor
 (defun solver(matriz_value region_value)
     (solverSuguru matriz_value region_value (retornaVetorDePesos region_value) 0 0 1)
 )
