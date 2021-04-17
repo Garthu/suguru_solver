@@ -24,7 +24,7 @@ matriz5x5(
     [0,0,1,0,4],
     [0,0,0,0,0],
     [4,0,0,0,0],
-    [0,0,0,0,0]])
+    [0,0,0,0,0]]).
 
 matriz6x6(
     [[0,0,0,2,2,2],
@@ -38,7 +38,7 @@ matriz6x6(
     [0,0,0,0,0,0],
     [5,1,0,3,0,0],
     [0,0,0,0,0,2],
-    [4,0,2,0,0,0]])
+    [4,0,2,0,0,0]]).
 
 matriz7x7(
     [[0,0,1,1,2,2,2],
@@ -54,7 +54,7 @@ matriz7x7(
     [3,0,2,0,2,0,2],
     [2,0,0,0,0,0,0],
     [0,0,5,0,0,5,0],
-    [1,0,0,0,1,0,0]])
+    [1,0,0,0,1,0,0]]).
 
 matriz8x8(
     [[0,0,0,3,4,4,5,5],
@@ -72,8 +72,8 @@ matriz8x8(
     [0,2,0,0,0,0,0,0],
     [0,0,0,0,4,0,0,4],
     [0,0,0,0,0,3,0,0],
-    [0,5,0,0,0,5,0,0]])
+    [0,5,0,0,0,5,0,0]]).
 
-retornaElementoMatriz(Mat,X,Y,Z) :- nth0(X,Mat,Lista), nth0(Y,Lista,El), Z is El.
+retornaelementomatriz(Mat,X,Y,Z) :- nth0(X,Mat,Lista), nth0(Y,Lista,El), Z is El.
 
-retornaelementolista(Lista,X,Z) :- nth0(X,Lista,El).
+retornaelementolista(Lista,X,Z) :- nth0(X,Lista,El), Z is El.
